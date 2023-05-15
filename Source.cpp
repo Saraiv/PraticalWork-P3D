@@ -24,17 +24,22 @@ void scrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
 }
 
 void cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
-	if (poolTable.mouse_button_state == GLFW_MOUSE_BUTTON_LEFT) {
-		if (poolTable.lastMouseX == 0.0) {
-			poolTable.lastMouseX = xpos;
-			poolTable.initialRotationY = poolTable.accumulatedRotationY;
+	static double lastX = xpos;
+	static bool firstMouse = true;
+
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+		if (firstMouse) {
+			lastX = xpos;
+			firstMouse = false;
 		}
 
-		double deltaX = xpos - poolTable.lastMouseX;
-		poolTable.lastMouseX = xpos;
-
 		float sensitivity = 0.1f;
-		poolTable.accumulatedRotationY += poolTable.initialRotationY + static_cast<float>(deltaX) * sensitivity;
+		float deltaX = static_cast<float>(xpos - lastX);
+		lastX = xpos;
+		poolTable.accumulatedRotationY += deltaX * sensitivity;
+	}
+	else {
+		firstMouse = true;
 	}
 }
 
