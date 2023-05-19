@@ -2,8 +2,13 @@
 #pragma comment(lib, "glew32s.lib")
 #pragma comment(lib, "opengl32.lib")
 #include"PoolTable.h"
+#include"Objects.h"
+
+#define WIDTH 1280
+#define HEIGTH 720
 
 PoolTable poolTable;
+Objects objects;
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
@@ -74,6 +79,8 @@ int main() {
 
 		// Model & Projection & View & Object & Pool Table Colors
 		poolTable.Init();
+		// Balls render TODO: WTF ahahah
+		//objects.Render("poolballs/Ball1.obj", window);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

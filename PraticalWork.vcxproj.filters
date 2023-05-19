@@ -21,23 +21,26 @@
     <ClCompile Include="PoolTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Objects.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Constants.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Objects.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="PoolTable.h">
-      <Filter>Resource Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="..\..\..\OneDrive\Área de Trabalho\cenas para c++\glfw3.lib">
-      <Filter>Source Files</Filter>
-    </Library>
-    <Library Include="..\..\..\OneDrive\Área de Trabalho\cenas para c++\glew32s.lib">
-      <Filter>Source Files</Filter>
-    </Library>
+    <Library Include="..\glew32s.lib" />
+    <Library Include="..\glfw3.lib" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\OneDrive\Área de Trabalho\cenas para c++\opengl32.dll">
-      <Filter>Source Files</Filter>
-    </None>
+    <None Include="..\opengl32.dll" />
   </ItemGroup>
 </Project>
