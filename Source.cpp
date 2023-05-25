@@ -8,7 +8,7 @@
 #define HEIGTH 720
 
 PoolTable poolTable;
-Objects objects;
+Objects objects[15];
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
@@ -49,8 +49,6 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
 }
 
 int main() {
-	//Objeto
-	poolTable = PoolTable();
 	GLFWwindow* window;
 
 	if (!glfwInit()) return -1;
@@ -73,14 +71,22 @@ int main() {
 	// Projection
 	poolTable.Projection();
 
+	//Balls
+	for (int i = 0; i < 15; i++) {
+		std::string path = "poolballs/Ball" + std::to_string(i + 1) + ".obj";
+		std::cout << "Ball " << i + 1 << std::endl;
+		objects[i].Read(path);
+	}
+
 	while (!glfwWindowShouldClose(window)) {
 		// View
 		poolTable.View();
 
 		// Model & Projection & View & Object & Pool Table Colors
-		poolTable.Init();
-		// Balls render TODO: WTF ahahah
-		//objects.Render("poolballs/Ball1.obj", window);
+		poolTable.Send();
+		for (int i = 0; i < 15; i++) {
+			objects[i].Send();
+		}
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

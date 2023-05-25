@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <string>
 
 #include <GL/glew.h>
 #include <Windows.h>
@@ -14,11 +15,24 @@
 #include <iostream>
 #include <fstream>
 
+#define WIDTH 1280
+#define HEIGHT 720
+
+struct face {
+	int index;
+	int vertice[4];
+	face(int a, int b, int c, int d, int e) {
+		vertice[0] = a; vertice[1] = b; vertice[2] = c; vertice[3] = d; index = e;
+	}
+};
+
 class Objects{
 	public:
-		Objects();
-		bool LoadObject(const char* filename, std::vector<GLfloat>& vertices);
-		void RenderObject(const std::vector<GLfloat>& vertices);
-		void Render(const char* filename, GLFWwindow* window);
-		~Objects();
+		std::vector<glm::vec3> Load3DModel();
+		glm::vec3 GetVertice(std::string s);
+		glm::vec3 GetNormal(std::string s);
+		face GetFace(std::string s);
+		void ColorBall();
+		void Read(std::string filePath);
+		void Send();
 };

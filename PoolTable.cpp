@@ -1,30 +1,26 @@
 #include"PoolTable.h"
 
-PoolTable::PoolTable() {
-	PoolTable::Load3DModel();
-}
-
-void PoolTable::Init() {
+void PoolTable::Send(){
 	//Model
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::rotate(model, glm::radians(accumulatedRotationY), glm::vec3(0.0f, 1.0f, 0.0f));
 	//Projection
 	glm::mat4 projection = glm::perspective(glm::radians(45.0f), float(WIDTH) / float(HEIGHT), 0.1f, 100.f);
 	//View
-	glm::mat4 view = PoolTable::View();
+	glm::mat4 view = View();
 	//Object
-	std::vector<glm::vec3> obj = PoolTable::Load3DModel();
+	std::vector<glm::vec3> obj = Load3DModel();
 
 	glm::mat4 mvp = projection * view * model;
 
-	PoolTable::ColorRectangle(obj, mvp);
+	ColorRectangle(obj, mvp);
 }
 
-glm::mat4 PoolTable::Projection() {
-	return glm::perspective(glm::radians(45.0f), float(WIDTH) / float(HEIGHT), 0.1f, 100.f);;
+glm::mat4 PoolTable::Projection(){
+	return glm::perspective(glm::radians(45.0f), float(WIDTH) / float(HEIGHT), 0.1f, 100.f);
 }
 
-std::vector<glm::vec3> PoolTable::Load3DModel() {
+std::vector<glm::vec3> PoolTable::Load3DModel(){
 	glm::vec3 point[6 * 4] = {
 		// Frente
 		glm::vec3(-5.0f, 0.5f, -8.0f),
@@ -70,7 +66,7 @@ std::vector<glm::vec3> PoolTable::Load3DModel() {
 	return ret;
 }
 
-void PoolTable::ColorRectangle(std::vector<glm::vec3> obj, glm::mat4 mvp) {
+void PoolTable::ColorRectangle(std::vector<glm::vec3> obj, glm::mat4 mvp){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	float* vertex_stream = static_cast<float*>(glm::value_ptr(obj.front()));
@@ -96,7 +92,7 @@ void PoolTable::ColorRectangle(std::vector<glm::vec3> obj, glm::mat4 mvp) {
 	glEnd();
 }
 
-glm::mat4 PoolTable::View() {
+glm::mat4 PoolTable::View(){
 	glm::mat4 view = glm::lookAt(
 		glm::vec3(10.0f, 5.0f, -ZOOM),	// Posicao da camara no mundo
 		glm::vec3(0.0f, 0.5f, 0.0f),	// Direcao para a qual a camara esta apontada

@@ -15,8 +15,7 @@
 
 class PoolTable {
 	public:
-		PoolTable();
-		void Init();
+		void Send();
 		static std::vector<glm::vec3> Load3DModel();
 		static void ColorRectangle(std::vector<glm::vec3> obj, glm::mat4 mvp);
 		glm::mat4 View();
