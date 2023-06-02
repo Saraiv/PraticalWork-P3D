@@ -2,20 +2,22 @@
 #pragma comment(lib, "glew32s.lib")
 #pragma comment(lib, "opengl32.lib")
 #include"PoolTable.h"
-#include"Objects.h"
+#include"PoolTableWindow.h"
+#include"Balls.h"
 
 #define WIDTH 1280
 #define HEIGTH 720
 
-PoolTable poolTable;
-Objects objects[15];
+PoolTableWindow poolTableWindow;
+PoolTable poolTable = PoolTable(poolTableWindow);
+Balls balls;
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
-		poolTable.mouse_button_state = GLFW_MOUSE_BUTTON_LEFT;
+		poolTableWindow.mouse_button_state = GLFW_MOUSE_BUTTON_LEFT;
 	}
 	else {
-		poolTable.mouse_button_state = -1;
+		poolTableWindow.mouse_button_state = -1;
 	}
 }
 
@@ -51,12 +53,12 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
 int main() {
 	GLFWwindow* window;
 
-	if (!glfwInit()) return -1;
+	if (!glfwInit()) return false;
 
 	window = glfwCreateWindow(WIDTH, HEIGHT, "Pratical Work", NULL, NULL);
 	if (window == NULL) {
 		glfwTerminate();
-		return -1;
+		return false;
 	}
 
 	glfwMakeContextCurrent(window);
@@ -68,25 +70,16 @@ int main() {
 	glfwSetScrollCallback(window, scrollCallback);
 	glfwSetCursorPosCallback(window, cursor_position_callback);
 
-	// Projection
-	poolTable.Projection();
-
 	//Balls
-	for (int i = 0; i < 15; i++) {
-		std::string path = "poolballs/Ball" + std::to_string(i + 1) + ".obj";
-		std::cout << "Ball " << i + 1 << std::endl;
-		objects[i].Read(path);
-	}
+	std::string path = "poolballs/Ball" + std::to_string(1) + ".obj";
+	balls.Read(path);
 
 	while (!glfwWindowShouldClose(window)) {
-		// View
-		poolTable.View();
-
 		// Model & Projection & View & Object & Pool Table Colors
 		poolTable.Send();
-		for (int i = 0; i < 15; i++) {
-			objects[i].Send();
-		}
+		poolTable.Load();
+		balls.Send();
+		balls.Load();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

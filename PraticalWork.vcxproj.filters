@@ -21,18 +21,24 @@
     <ClCompile Include="PoolTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Objects.cpp">
+    <ClCompile Include="Balls.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Constants.h">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="PoolTableWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Objects.h">
+    <ClInclude Include="Balls.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PoolTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PoolTableWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

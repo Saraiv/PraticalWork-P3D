@@ -10,21 +10,16 @@
 #include <glm/gtc/matrix_transform.hpp> // translate, rotate, scale, perspective, ...
 #include <glm/gtc/type_ptr.hpp> // value_ptr
 
-#include"PoolTableWindow.h"
-
 #define WIDTH 1280
 #define HEIGHT 720
 
-class PoolTable {
+class PoolTableWindow {
 	public:
-		PoolTable(PoolTableWindow poolTableWindow);
-		void Send();
-		void Load();
+		glm::mat4 View(float ZOOM);
+		glm::mat4 Projection();
+		glm::mat4 Model(float accumulatedRotationY);
 
-		float accumulatedRotationY = 0.0f;
-		float ZOOM = 15.0f;
-	private:
-		PoolTableWindow poolTableWindow;
-		std::vector<glm::vec3> poolTable;
-		glm::mat4 mvp, model, projection, view;
+		int mouse_button_state = -1;
+		double lastMouseX = 0.0f;
+
 };

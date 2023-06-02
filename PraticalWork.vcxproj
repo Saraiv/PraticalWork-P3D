@@ -128,13 +128,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Constants.h" />
-    <ClCompile Include="Objects.cpp" />
+    <ClCompile Include="Balls.cpp" />
     <ClCompile Include="PoolTable.cpp" />
+    <ClCompile Include="PoolTableWindow.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Objects.h" />
+    <ClInclude Include="Balls.h" />
     <ClInclude Include="PoolTable.h" />
+    <ClInclude Include="PoolTableWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\glew32s.lib" />

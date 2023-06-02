@@ -14,6 +14,9 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
+
+#include"PoolTableWindow.h"
 
 #define WIDTH 1280
 #define HEIGHT 720
@@ -26,13 +29,21 @@ struct face {
 	}
 };
 
-class Objects{
+class Balls{
 	public:
-		std::vector<glm::vec3> Load3DModel();
-		glm::vec3 GetVertice(std::string s);
-		glm::vec3 GetNormal(std::string s);
-		face GetFace(std::string s);
-		void ColorBall();
-		void Read(std::string filePath);
+		void Read(std::string& filePath);
 		void Send();
+		void Load();
+
+		float accumulatedRotationY = 0.0f;
+		float ZOOM = 15.0f;
+	private:
+		std::vector<glm::vec3> vertices;
+		std::vector<glm::vec3> normals;
+		std::vector<face> faces;
+		std::vector<glm::vec3> ball;
+
+		PoolTableWindow poolTableWindow;
+		std::vector<glm::vec3> poolTable;
+		glm::mat4 mvp, model, projection, view;
 };
