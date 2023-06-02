@@ -5,7 +5,7 @@ void Balls::Read(std::string& filename){
 	std::string line = "";
 
 	if (!arq.is_open()) {
-		std::cout << "ERRO::Nao foi possivel abrir o arquivo " << filename << std::endl;
+		std::cout << "ERRO: Nao foi possivel abrir o arquivo " << filename << std::endl;
 	}
 
 	while (getline(arq, line)) {
@@ -30,10 +30,26 @@ void Balls::Read(std::string& filename){
 	}
 
 	arq.close();
+
+	for (auto i : vertices)
+		ball.push_back(i);
 }
 
 void Balls::Load(){
-	
+	float* vertex_stream = static_cast<float*>(glm::value_ptr(ball.front()));
+
+	glBegin(GL_QUADS);
+		for (const face& face : faces) {
+			glColor3f(1.0f, 0.4f, 0.4f);
+
+			for (int i = 0; i < 4; i++){
+				glm::vec4 vertex = glm::vec4(vertex_stream[i + i], vertex_stream[i + 1], vertex_stream[i + 2], 1.0f);
+				glm::vec4 transformed_vertex = mvp * vertex;
+				glm::vec4 normalized_vertex = transformed_vertex / transformed_vertex.w;
+				glVertex3f(normalized_vertex.x, normalized_vertex.y, normalized_vertex.z);
+			}
+		}
+	glEnd();
 }
 
 void Balls::Send() {

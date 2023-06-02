@@ -17,7 +17,6 @@
 
 class PoolTable {
 	public:
-		PoolTable(PoolTableWindow poolTableWindow);
 		void Send();
 		void Load();
 

@@ -1,10 +1,5 @@
 #include"PoolTable.h"
 
-PoolTable::PoolTable(PoolTableWindow poolTableWindow) {
-	this->poolTableWindow = poolTableWindow;
-
-}
-
 void PoolTable::Send(){
 	//Model
 	model = poolTableWindow.Model(accumulatedRotationY);
