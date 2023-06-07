@@ -132,18 +132,12 @@
     <ClCompile Include="PoolTable.cpp" />
     <ClCompile Include="PoolTableWindow.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Balls.h" />
     <ClInclude Include="PoolTable.h" />
     <ClInclude Include="PoolTableWindow.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\glew32s.lib" />
-    <Library Include="..\glfw3.lib" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\opengl32.dll" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

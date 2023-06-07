@@ -30,6 +30,9 @@
     <ClCompile Include="PoolTableWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Balls.h">
@@ -41,12 +44,5 @@
     <ClInclude Include="PoolTableWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\glew32s.lib" />
-    <Library Include="..\glfw3.lib" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\opengl32.dll" />
   </ItemGroup>
 </Project>

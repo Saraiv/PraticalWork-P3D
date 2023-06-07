@@ -18,7 +18,7 @@
 class PoolTable {
 	public:
 		void Send();
-		void Load();
+		void Draw();
 
 		float accumulatedRotationY = 0.0f;
 		float ZOOM = 15.0f;

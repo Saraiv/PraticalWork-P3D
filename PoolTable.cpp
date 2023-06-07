@@ -11,7 +11,7 @@ void PoolTable::Send(){
 	mvp = projection * view * model;
 }
 
-void PoolTable::Load(){
+void PoolTable::Draw(){
 	glm::vec3 point[6 * 4] = {
 		// Frente
 		glm::vec3(-5.0f, 0.5f, -8.0f),

@@ -1,5 +1,5 @@
 ﻿#pragma comment(lib, "glfw3.lib")
-#pragma comment(lib, "glew32s.lib")
+#pragma comment(lib, "glew32.lib")
 #pragma comment(lib, "opengl32.lib")
 #include"PoolTable.h"
 #include"PoolTableWindow.h"
@@ -53,40 +53,35 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
 int main() {
 	GLFWwindow* window;
 
-	if (!glfwInit()) return false;
+	if (!glfwInit()) return -1;
 
 	window = glfwCreateWindow(WIDTH, HEIGHT, "Pratical Work", NULL, NULL);
 	if (window == NULL) {
 		glfwTerminate();
-		return false;
+		return -1;
 	}
 
 	glfwMakeContextCurrent(window);
-
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	glEnable(GL_DEPTH_TEST);
 
 	glfwSetMouseButtonCallback(window, mouse_button_callback);
 	glfwSetScrollCallback(window, scrollCallback);
 	glfwSetCursorPosCallback(window, cursor_position_callback);
 
-	//Balls
-	for (int i = 0; i < 15; i++) {
-			std::string path = "poolballs/Ball" + std::to_string(i + 1) + ".obj";
-			balls[i].Read(path);
-	}
-	
+	//Inicia o gestor de extensões GLEW
+	glewExperimental = GL_TRUE;
+	glewInit();
+
+
+	balls[0].Read("poolballs/Ball3.obj");
 
 	while (!glfwWindowShouldClose(window)) {
 		// Model & Projection & View & Object & Pool Table Colors
 		poolTable.Send();
-		for (int i = 0; i < 15; i++)
-			balls[i].Send();
+		balls[0].Send();
 
-		//Load into screen
-		poolTable.Load();
-		for (int i = 0; i < 15; i++)
-			balls[i].Load();
+		//Draw into screen
+		poolTable.Draw();
+		balls[0].Draw(glm::vec3(-5.0f, 0.5f, -8.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
