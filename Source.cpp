@@ -91,7 +91,7 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//Draw into screen
 		poolTable.Draw();
-		balls[0].Draw(glm::vec3(-5.0f, 0.5f, -8.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		balls[0].Draw(glm::vec3(-5.0f, 2.0f, -8.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
