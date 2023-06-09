@@ -4,7 +4,7 @@ uniform mat4 Model;
 uniform mat4 View;
 uniform mat4 ModelView;		// View * Model
 
-uniform sampler2D texture;
+uniform sampler2D texSampler;
 
 // Estrutura da fonte de luz ambiente global
 struct AmbientLight {
@@ -101,9 +101,9 @@ void main()
 	light[3] = calcSpotLight(spotLight);
 
 	//Com iluminação
-	//fColor = (emissive + light[0] + light[1] + light[2] + light[3]) * texture(texSampler, texCoords);
+	fColor = (emissive + light[0] + light[1] + light[2] + light[3]) * texture(texSampler, texCoords);
 
-	fColor = vec4(1.0,0.5,0.5,1.0);
+	//fColor = vec4(1.0,0.5,0.5,1.0);
 }
 
 vec4 calcAmbientLight(AmbientLight light) {

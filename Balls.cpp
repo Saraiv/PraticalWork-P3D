@@ -268,12 +268,14 @@ GLuint Balls::Send() {
 
 
 
-	ShaderInfo shaders[] = { { GL_VERTEX_SHADER,"Balls.vert" },
-	{ GL_FRAGMENT_SHADER, "Balls.frag" },
-	{ GL_NONE, NULL } };  //GL_None marca o final da lista de shader info
+	ShaderInfo shaders[] = { 
+		{ GL_VERTEX_SHADER,"Balls.vert" },
+		{ GL_FRAGMENT_SHADER, "Balls.frag" },
+		{ GL_NONE, NULL } 
+	};  //GL_None marca o final da lista de shader info
 	
-	GLuint programa = LoadShaders(shaders);
-	this-> programa  = programa;
+	programa = LoadShaders(shaders); 
+	//if (!programa) exit(EXIT_FAILURE);
 	glUseProgram(programa);
 
 	// ligar atributos aos shaders
@@ -302,7 +304,7 @@ GLuint Balls::Send() {
 	glEnableVertexAttribArray(texid);
 	glEnableVertexAttribArray(normalid);
 
-	GLint textureid = glGetProgramResourceLocation(programa, GL_PROGRAM_INPUT, "texture");
+	GLint textureid = glGetProgramResourceLocation(programa, GL_PROGRAM_INPUT, "texSampler");
 	glProgramUniform1i(programa, textureid, 0);
 
 	
@@ -341,6 +343,9 @@ void Balls::Draw(glm::vec3 position, glm::vec3 orientation) {
 
 	GLint normalViewId = glGetProgramResourceLocation(programa, GL_UNIFORM, "NormalMatrix");    //Atribui valor ao uniform NormalMatrix
 	glProgramUniformMatrix3fv(programa, normalViewId, 1, GL_FALSE, glm::value_ptr(normalMatrix));
+
+	GLint texSamplerId = glGetProgramResourceLocation(programa, GL_UNIFORM, "texSampler");      //Atribui valor ao uniform textSamples
+	glProgramUniform1i(programa, texSamplerId, 0);
 
 	//Ativar e desativar o efeito no modelo
 	//glProgramUniform1f(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "effectModel"), deformeffect);
