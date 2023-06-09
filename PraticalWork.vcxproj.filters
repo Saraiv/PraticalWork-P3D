@@ -56,7 +56,7 @@
     <ClInclude Include="LoadShaders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Luzes.h">
+    <ClInclude Include="Lights.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

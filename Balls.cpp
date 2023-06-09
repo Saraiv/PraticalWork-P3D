@@ -104,7 +104,7 @@ void Balls::Read(const std::string objFilepath) {
 void Balls::Load(std::string fileName) {
 	//Ler o ficheiro (material) : Variaveis
 	std::stringstream ss;
-	std::string fileNameTemp = "poolBalls/" + fileName;
+	std::string fileNameTemp = "PoolBalls/" + fileName;
 	std::ifstream in_file(fileNameTemp);
 	std::string line = "";
 	std::string prefix = "";
@@ -256,7 +256,8 @@ GLuint Balls::Send() {
 
 	//Guardar a informação no buffer
 	glGenBuffers(3, Buffers);// Gera 'NumBuffers' nomes para VBOs.
-	for (int i = 0; i < NumBuffers; i++) {
+
+	for (int i = 0; i < 3 ; i++) {
 		glBindBuffer(GL_ARRAY_BUFFER, Buffers[i]);
 		if (i == 0)
 			glBufferStorage(GL_ARRAY_BUFFER, sizeof(BindPos), BindPos, 0);  //Info dos vertices - Inicializa o VBO (que está ativo) com dados imutáveis.
@@ -279,7 +280,8 @@ GLuint Balls::Send() {
 	// ligar atributos aos shaders
 	GLuint coordsid = glGetProgramResourceLocation(programa, GL_PROGRAM_INPUT, "vPosition");      // obtém a localização do atributo 'vposition' no 'programa'.
 	GLuint texid = glGetProgramResourceLocation(programa, GL_PROGRAM_INPUT, "vTexture");          // obtém a localização do atributo 'vtexture' no 'programa'.
-	GLuint normalid = glGetProgramResourceLocation(programa, GL_PROGRAM_INPUT, "vNormal");        // obtém a localização do atributo 'vnormal' no 'programa'.
+	GLuint normalid = glGetProgramResourceLocation(programa, GL_PROGRAM_INPUT, "vNormal"); // obtém a localização do atributo 'vnormal' no 'programa'.
+
 	std::cout << coordsid << std::endl << texid << std::endl << normalid << std::endl;
 
 	glBindBuffer(GL_ARRAY_BUFFER, Buffers[0]);

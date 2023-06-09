@@ -41,12 +41,9 @@ class Balls{
 
 		float accumulatedRotationY = 0.0f;
 		float ZOOM = 15.0f;
-
-		bool lightMode1 = true;
-		bool lightMode2 = true;
-		bool lightMode3 = true;
-		bool lightMode4 = true;
-		float deformeffect = 0;
+		//Balls(const char* filename);
+		glm::vec3 ka, kd, ks;
+		GLfloat ns;
 
 	private:
 		//Vertex Pos
@@ -67,13 +64,13 @@ class Balls{
 
 		const GLuint NumVertices = 4034;
 
-		// Luzes Coeficientes:
-		glm::vec3 ka; // Da Luz Ambiente
-		glm::vec3 kd; // Da Luz Difusa
-		glm::vec3 ks; // Da Luz Luz especular
+		
 
 		
 
 		float Ns; // Expoente especular
 		float angle = 0.0f;
 };
+
+
+

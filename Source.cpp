@@ -4,7 +4,7 @@
 #include"PoolTable.h"
 #include"PoolTableWindow.h"
 #include"Balls.h"
-
+#include "Lights.h"
 #define WIDTH 1280
 #define HEIGTH 720
 
