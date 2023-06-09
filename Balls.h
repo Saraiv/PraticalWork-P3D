@@ -27,7 +27,7 @@
 class Balls{
 	public:
 		void Read(const std::string objFilepath);
-		void Send();
+		GLuint Send();
 		void Load(std::string fileName);
 		void Draw(glm::vec3 position, glm::vec3 orientation);
 
@@ -37,9 +37,17 @@ class Balls{
 		void getPontualLightInactive();
 		void getSpotLightActive();
 		void getSpotLightInactive();
+		void Texture(const std::string textureFile);
 
 		float accumulatedRotationY = 0.0f;
 		float ZOOM = 15.0f;
+
+		bool lightMode1 = true;
+		bool lightMode2 = true;
+		bool lightMode3 = true;
+		bool lightMode4 = true;
+		float deformeffect = 0;
+
 	private:
 		//Vertex Pos
 		std::vector<glm::vec3> vertex_positions;
@@ -53,7 +61,7 @@ class Balls{
 				  projection = poolTableWindow.View(ZOOM),
 				  view = projection * view * model;
 		glm::mat3 normalMatrix;
-		GLuint VAO[NumeroDeVAOs];
+		GLuint VAO;
 		GLuint Buffers[NumBuffers];
 		GLuint programa;
 
@@ -64,11 +72,7 @@ class Balls{
 		glm::vec3 kd; // Da Luz Difusa
 		glm::vec3 ks; // Da Luz Luz especular
 
-		bool lightMode1 = true;
-		bool lightMode2 = true;
-		bool lightMode3 = true;
-		bool lightMode4 = true;
-		float deformeffect = 0;
+		
 
 		float Ns; // Expoente especular
 		float angle = 0.0f;

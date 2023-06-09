@@ -1,5 +1,5 @@
 ﻿#pragma comment(lib, "glfw3.lib")
-#pragma comment(lib, "glew32.lib")
+#pragma comment(lib, "glew32s.lib")
 #pragma comment(lib, "opengl32.lib")
 #include"PoolTable.h"
 #include"PoolTableWindow.h"
@@ -50,6 +50,13 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
 	}
 }
 
+void init() {
+	glClearColor(0.02f, 0.0f, 0.2f, 0.0f);
+	glEnable(GL_DEPTH_TEST);
+
+	glEnable(GL_CULL_FACE);
+}
+
 int main() {
 	GLFWwindow* window;
 
@@ -69,16 +76,19 @@ int main() {
 
 	//Inicia o gestor de extensões GLEW
 	glewExperimental = GL_TRUE;
+	init();
 	glewInit();
 
 
-	balls[0].Read("poolballs/Ball3.obj");
+	balls[0].Read("Poolballs/Ball1.obj");
+
+	poolTable.Send();
+	balls[0].Send();
 
 	while (!glfwWindowShouldClose(window)) {
-		// Model & Projection & View & Object & Pool Table Colors
-		poolTable.Send();
-		balls[0].Send();
-
+		
+		
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//Draw into screen
 		poolTable.Draw();
 		balls[0].Draw(glm::vec3(-5.0f, 0.5f, -8.0f), glm::vec3(0.0f, 1.0f, 0.0f));

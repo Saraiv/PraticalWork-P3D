@@ -104,6 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.35.32215\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -118,6 +119,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.35.32215\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -129,6 +131,7 @@
   <ItemGroup>
     <ClCompile Include="Constants.h" />
     <ClCompile Include="Balls.cpp" />
+    <ClCompile Include="LoadShaders.cpp" />
     <ClCompile Include="PoolTable.cpp" />
     <ClCompile Include="PoolTableWindow.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -136,8 +139,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Balls.h" />
+    <ClInclude Include="LoadShaders.h" />
     <ClInclude Include="PoolTable.h" />
     <ClInclude Include="PoolTableWindow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Balls.frag" />
+    <None Include="Balls.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
