@@ -56,6 +56,9 @@
     <ClInclude Include="LoadShaders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Luzes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Balls.frag">

@@ -272,27 +272,29 @@ GLuint Balls::Send() {
 	{ GL_FRAGMENT_SHADER, "Balls.frag" },
 	{ GL_NONE, NULL } };  //GL_None marca o final da lista de shader info
 	
-	programa = LoadShaders(shaders); //carregar shaders
+	GLuint programa = LoadShaders(shaders);
+	this-> programa  = programa;
 	glUseProgram(programa);
-	std::cout << programa << std::endl;
 
 	// ligar atributos aos shaders
 	GLuint coordsid = glGetProgramResourceLocation(programa, GL_PROGRAM_INPUT, "vPosition");      // obtém a localização do atributo 'vposition' no 'programa'.
 	GLuint texid = glGetProgramResourceLocation(programa, GL_PROGRAM_INPUT, "vTexture");          // obtém a localização do atributo 'vtexture' no 'programa'.
 	GLuint normalid = glGetProgramResourceLocation(programa, GL_PROGRAM_INPUT, "vNormal");        // obtém a localização do atributo 'vnormal' no 'programa'.
 	std::cout << coordsid << std::endl << texid << std::endl << normalid << std::endl;
+
 	glBindBuffer(GL_ARRAY_BUFFER, Buffers[0]);
 	glVertexAttribPointer(coordsid, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 	
-	
-	glBindBuffer(GL_ARRAY_BUFFER, Buffers[2]);
-	glVertexAttribPointer(normalid, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+	glBindBuffer(GL_ARRAY_BUFFER, Buffers[1]);
+	glVertexAttribPointer(texid, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
+
 	GLenum error = glGetError();
 	if (error != GL_NO_ERROR) {
 		std::cout << "OpenGL Error: " << error << std::endl;                           // da bind no 1º mas n da nem no 2 nem no 3
 	}
-	glBindBuffer(GL_ARRAY_BUFFER, Buffers[1]);
-	glVertexAttribPointer(texid, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
+
+	glBindBuffer(GL_ARRAY_BUFFER, Buffers[2]);
+	glVertexAttribPointer(normalid, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
 	
 	//habitita o atributo com localização 'coordsid', 'textid', normalid para o vao ativo.
@@ -354,64 +356,3 @@ void Balls::Draw(glm::vec3 position, glm::vec3 orientation) {
 	glDrawArrays(GL_TRIANGLES, 0, vertex_positions.size());
 }
 
-//lights functions
-void Balls::getDirectionalLightActive()
-{
-	glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "directionalLight.direction"), 1, glm::value_ptr(glm::vec3(1.0, 0.0, 0.0)));
-	glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "directionalLight.ambient"), 1, glm::value_ptr(glm::vec3(0.2, 0.2, 0.2)));
-	glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "directionalLight.diffuse"), 1, glm::value_ptr(glm::vec3(1.0, 1.0, 1.0)));
-	glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "directionalLight.specular"), 1, glm::value_ptr(glm::vec3(1.0, 1.0, 1.0)));
-}
-
-void Balls::getDirectionalLightInactive()
-{
-	glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "directionalLight.direction"), 1, glm::value_ptr(glm::vec3(0.0, 0.0, 0.0)));
-	glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "directionalLight.ambient"), 1, glm::value_ptr(glm::vec3(0.0, 0.0, 0.0)));
-	glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "directionalLight.diffuse"), 1, glm::value_ptr(glm::vec3(0.0, 0.0, 0.0)));
-	glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "directionalLight.specular"), 1, glm::value_ptr(glm::vec3(0.0, 0.0, 0.0)));
-}
-
-void Balls::getPontualLightActive()
-{
-	glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "pointLight.position"), 1, glm::value_ptr(glm::vec3(0.0, 0.0, 5.0)));
-	glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "pointLight.ambient"), 1, glm::value_ptr(glm::vec3(0.1, 0.1, 0.1)));
-	glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "pointLight.diffuse"), 1, glm::value_ptr(glm::vec3(1.0, 1.0, 1.0)));
-	glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "pointLight.specular"), 1, glm::value_ptr(glm::vec3(1.0, 1.0, 1.0)));
-	glProgramUniform1f(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "pointLight.constant"), 1.0f);
-	glProgramUniform1f(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "pointLight.linear"), 0.06f);
-	glProgramUniform1f(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "pointLight.quadratic"), 0.02f);
-}
-
-void Balls::getPontualLightInactive()
-{
-	glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "pointLight.position"), 1, glm::value_ptr(glm::vec3(0.0, 0.0, 0.0)));
-	glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "pointLight.ambient"), 1, glm::value_ptr(glm::vec3(0.0, 0.0, 0.0)));
-	glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "pointLight.diffuse"), 1, glm::value_ptr(glm::vec3(0.0, 0.0, 0.0)));
-	glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "pointLight.specular"), 1, glm::value_ptr(glm::vec3(0.0, 0.0, 0.0)));
-	glProgramUniform1f(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "pointLight.constant"), 0.0f);
-	glProgramUniform1f(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "pointLight.linear"), 0.00f);
-	glProgramUniform1f(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "pointLight.quadratic"), 0.00f);
-}
-
-void Balls::getSpotLightActive()
-{
-	glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "spotLight.position"), 1, glm::value_ptr(glm::vec3(0, 10.0, 12.0)));
-	glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "spotLight.ambient"), 1, glm::value_ptr(glm::vec3(2.0, 2.0, 2.0)));
-	glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "spotLight.diffuse"), 1, glm::value_ptr(glm::vec3(15.0, 15.0, 15.0)));
-	glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "spotLight.specular"), 1, glm::value_ptr(glm::vec3(15.0, 15.0, 15.0)));
-	glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "spotLight.spotDirection"), 1, glm::value_ptr(glm::vec3(0.0, 3.0, 0.0)));
-	glProgramUniform1f(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "spotLight.spotCutoff"), 0.5f);
-	glProgramUniform1f(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "spotLight.spotExponent"), 0.5f);
-	glProgramUniform1f(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "spotLight.constant"), 1.0f);
-	glProgramUniform1f(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "spotLight.linear"), 0.06f);
-	glProgramUniform1f(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "spotLight.quadratic"), 0.02f);
-}
-
-void Balls::getSpotLightInactive()
-{
-	glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "spotLight.position"), 1, glm::value_ptr(glm::vec3(0, 0, 0)));
-	glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "spotLight.ambient"), 1, glm::value_ptr(glm::vec3(0.0, 0.0, 0.0)));
-	glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "spotLight.diffuse"), 1, glm::value_ptr(glm::vec3(0.0, 0.0, 0.0)));
-	glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "spotLight.specular"), 1, glm::value_ptr(glm::vec3(0.0, 0.0, 0.0)));
-	glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "spotLight.spotDirection"), 1, glm::value_ptr(glm::vec3(0.0, 0.0, 0.0)));
-}

@@ -140,6 +140,7 @@
   <ItemGroup>
     <ClInclude Include="Balls.h" />
     <ClInclude Include="LoadShaders.h" />
+    <ClInclude Include="Luzes.h" />
     <ClInclude Include="PoolTable.h" />
     <ClInclude Include="PoolTableWindow.h" />
   </ItemGroup>
