@@ -5,12 +5,14 @@
 #include"PoolTableWindow.h"
 #include"Balls.h"
 #include "Lights.h"
+#include "Camera.h"
+
 #define WIDTH 1280
 #define HEIGTH 720
 
 PoolTableWindow poolTableWindow;
 PoolTable poolTable;
-Balls balls[15];
+//Balls balls[15];
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
@@ -59,6 +61,9 @@ void init() {
 
 int main() {
 	GLFWwindow* window;
+	Camera* camera;
+	camera = camera->GetInstance();
+	camera->InicializeCamera(45.0f, WIDTH, HEIGHT, glm::vec3(0.0f, 2.0f, 5.0f), glm::vec3(0.0f, 2.0f, 0.0));
 
 	if (!glfwInit()) return -1;
 
@@ -80,18 +85,23 @@ int main() {
 	glewInit();
 
 
-	balls[0].Read("Poolballs/Ball1.obj");
+	//balls[0].Read("Poolballs/Ball1.obj");
 
-	poolTable.Send();
-	balls[0].Send();
+	Balls ball = Balls("Poolballs/Ball1.obj");
+	ball.Send();
+	//poolTable.Send();	
+	//balls[0].Send();6
 
 	while (!glfwWindowShouldClose(window)) {
 		
 		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		lights::Lights(&ball);
 		//Draw into screen
-		poolTable.Draw();
-		balls[0].Draw(glm::vec3(-5.0f, 2.0f, -8.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+		//poolTable.Draw();
+		//balls[0].Draw(glm::vec3(-5.0f, 2.0f, -8.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+		ball.Draw(glm::vec3(0, 2, 0), glm::vec3(0, 0, 0));
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

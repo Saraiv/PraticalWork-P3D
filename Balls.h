@@ -27,18 +27,12 @@
 class Balls{
 	public:
 		void Read(const std::string objFilepath);
-		GLuint Send();
+		GLuint Send(void);
 		void Load(std::string fileName);
 		void Draw(glm::vec3 position, glm::vec3 orientation);
-
-		void getDirectionalLightActive();
-		void getDirectionalLightInactive();
-		void getPontualLightActive();
-		void getPontualLightInactive();
-		void getSpotLightActive();
-		void getSpotLightInactive();
 		void Texture(const std::string textureFile);
-
+		glm::mat4 ball;
+		Balls(const char* filename);
 		float accumulatedRotationY = 0.0f;
 		float ZOOM = 15.0f;
 		//Balls(const char* filename);
@@ -52,12 +46,6 @@ class Balls{
 		std::vector<glm::vec3> vertex_normals;
 
 		PoolTableWindow poolTableWindow;
-		std::vector<glm::vec3> poolTable;
-		glm::mat4 mvp = poolTableWindow.Model(accumulatedRotationY),
-				  model = poolTableWindow.Projection(),
-				  projection = poolTableWindow.View(ZOOM),
-				  view = projection * view * model;
-		glm::mat3 normalMatrix;
 		GLuint VAO;
 		GLuint Buffers[NumBuffers];
 		GLuint programa;
@@ -71,6 +59,9 @@ class Balls{
 		float Ns; // Expoente especular
 		float angle = 0.0f;
 };
-
+inline Balls::Balls (const char* filename) {
+	ball= glm::mat4(1.0f);
+	Read(filename);
+}
 
 

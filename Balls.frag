@@ -86,22 +86,23 @@ void main()
 	vec4 emissive = vec4(material.emissive, 1.0);
 
 	// Cálculo do efeito da iluminação no fragmento.
-	vec4 light[4];
+	vec4 light[5];
 
 	// Contribuição da fonte de luz ambiente
 	light[0] = calcAmbientLight(ambientLight);
 
 	// Contribuição da fonte de luz direcional
-	light[1] = calcDirectionalLight(directionalLight);
+	//light[1] = calcDirectionalLight(directionalLight); // esta porra ta mal
 
 	// Contribuição de cada fonte de luz Pontual
-	light[2] = calcPointLight(pointLight);
+	//light[2] = calcPointLight(pointLight); // esta porra tb ta mal
 
 	// Contribuição da fonte de luz cónica
-	light[3] = calcSpotLight(spotLight);
+	//light[3] = calcSpotLight(spotLight); // esta tb fds
 
+	light[4]= vec4(0.0);
 	//Com iluminação
-	fColor = (emissive + light[0] + light[1] + light[2] + light[3]) * texture(texSampler, texCoords);
+	fColor = (emissive + light[0] + light[1] + light[2] + light[3] + light[4] ) * texture(texSampler, texCoords);
 
 	//fColor = vec4(1.0,0.5,0.5,1.0);
 }

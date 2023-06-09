@@ -1,10 +1,12 @@
 #include"Balls.h"
 #define STB_IMAGE_IMPLEMENTATION
+#include <glm/gtc/matrix_transform.hpp> 
 #include "stb_image.h"
 #include "LoadShaders.h"
+#include "Camera.h"
 
 
-
+using namespace glm;
 
 void Balls::Read(const std::string objFilepath) {
 	//Vertex Variables
@@ -226,7 +228,7 @@ void  Balls::Texture(const std::string textureFile)
 	}
 }
 
-GLuint Balls::Send() {
+GLuint Balls::Send(void) {
 
 	GLfloat BindPos[24192 * 3];
 	GLfloat BindN[24192 * 3];
@@ -238,7 +240,7 @@ GLuint Balls::Send() {
 		BindPos[i * 3] = vertex_positions[i].x;
 		BindPos[i * 3 + 1] = vertex_positions[i].y;
 		BindPos[i * 3 + 2] = vertex_positions[i].z;
-
+		
 		//Normais
 		BindN[i * 3] = vertex_normals[i].x;
 		BindN[i * 3 + 1] = vertex_normals[i].y;
@@ -276,7 +278,7 @@ GLuint Balls::Send() {
 	};  //GL_None marca o final da lista de shader info
 	
 	programa = LoadShaders(shaders); 
-	//if (!programa) exit(EXIT_FAILURE);
+	this->programa = programa;
 	glUseProgram(programa);
 
 	//Posição no shader (ponteiro da variavel do shader)
@@ -296,6 +298,10 @@ GLuint Balls::Send() {
 	glBindBuffer(GL_ARRAY_BUFFER, Buffers[2]);
 	glVertexAttribPointer(normalid, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
+	GLenum error = glGetError();
+	if (error != GL_NO_ERROR) {
+		std::cout << "OpenGL Error: " << error << std::endl;                           // da bind no 1º mas n da nem no 2 nem no 3
+	}
 	
 	//habitita o atributo com localização 'coordsid', 'textid', normalid para o vao ativo.
 	glEnableVertexAttribArray(coordsid);
@@ -311,7 +317,7 @@ GLuint Balls::Send() {
 }
 
 void Balls::Draw(glm::vec3 position, glm::vec3 orientation) {
-	////Verificar se a luz ambiente esta on e atribuir valores
+	/*////Verificar se a luz ambiente esta on e atribuir valores
 	//lightMode1 == true ? glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "ambientLight.ambient"), 1, glm::value_ptr(glm::vec3(2.1, 2.1, 2.1))) :
 	//	glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "ambientLight.ambient"), 1, glm::value_ptr(glm::vec3(0, 0, 0)));
 	//lightMode2 == true ? getDirectionalLightActive() : getDirectionalLightInactive(); //Ver se a luz direcional esta on e atribuir valores
@@ -326,10 +332,15 @@ void Balls::Draw(glm::vec3 position, glm::vec3 orientation) {
 	//glProgramUniform1f(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "material.shininess"), Ns);
 
 	//Atualiza camera
-	mvp = poolTableWindow.Model(accumulatedRotationY);
+	/*mvp = poolTableWindow.Model(accumulatedRotationY);
 	model = poolTableWindow.Projection(),
 		projection = poolTableWindow.View(ZOOM),
 		view = projection * view * model;
+
+	model = translate (glm::mat4(1.0), position);
+	view = poolTableWindow.View(1);
+	projection = poolTableWindow.Projection();
+	mvp = projection * view * model;
 
 	GLint modelId = glGetProgramResourceLocation(programa, GL_UNIFORM, "Model");                //Atribui valor ao uniform Model
 	glProgramUniformMatrix4fv(programa, modelId, 1, GL_FALSE, glm::value_ptr(model));
@@ -357,6 +368,40 @@ void Balls::Draw(glm::vec3 position, glm::vec3 orientation) {
 	glBindVertexArray(VAO);
 
 	//Envia comando para desenho de primitivas GL_TRIANGLES, que utilizará os dados do VAO vinculado.
+	glDrawArrays(GL_TRIANGLES, 0, vertex_positions.size());*/
+	Camera::GetInstance()->Update();
+
+	mat4 tempmodel = ball;
+	tempmodel = translate(tempmodel, position);
+
+	//Orientation é o pitch, yaw, roll em graus
+	tempmodel = rotate(tempmodel, radians(orientation.x), vec3(1, 0, 0)); //pitch
+	tempmodel = rotate(tempmodel, radians(orientation.y), vec3(0, 1, 0)); //yaw
+	tempmodel = rotate(tempmodel, radians(orientation.z), vec3(0, 0, 1)); //roll
+
+	GLint modelId = glGetProgramResourceLocation(programa, GL_UNIFORM, "Model");
+	glProgramUniformMatrix4fv(programa, modelId, 1, GL_FALSE, glm::value_ptr(tempmodel));
+
+	mat4 modelView = Camera::GetInstance()->view * tempmodel;
+	GLint modelViewId = glGetProgramResourceLocation(programa, GL_UNIFORM, "ModelView");
+	glProgramUniformMatrix4fv(programa, modelViewId, 1, GL_FALSE, glm::value_ptr(modelView));
+
+	mat3 normalMatrix = glm::inverseTranspose(glm::mat3(modelView));
+	GLint normalMatrixId = glGetProgramResourceLocation(programa, GL_UNIFORM, "NormalMatrix");
+	glProgramUniformMatrix4fv(programa, normalMatrixId, 1, GL_FALSE, glm::value_ptr(normalMatrix));
+
+	GLint viewID = glGetProgramResourceLocation(programa, GL_UNIFORM, "View");
+	glProgramUniformMatrix4fv(programa, viewID, 1, GL_FALSE, glm::value_ptr(Camera::GetInstance()->view));
+	GLint projectionId = glGetProgramResourceLocation(programa, GL_UNIFORM, "Projection");
+	glProgramUniformMatrix4fv(programa, projectionId, 1, GL_FALSE, glm::value_ptr(Camera::GetInstance()->projection));
+
+	
+
+
+	glBindVertexArray(VAO);
+
+	// Envia comando para desenho de primitivas GL_TRIANGLES, que utilizará os dados do VAO vinculado.
 	glDrawArrays(GL_TRIANGLES, 0, vertex_positions.size());
+	// glDrawElements(GL_TRIANGLES, NumIndices, GL_UNSIGNED_INT, (void*)0); // eb
 }
 

@@ -1,13 +1,12 @@
 #include <GL/glew.h>
 #include "LoadShaders.h"
 #include "Balls.h"
+#include "Camera.h"
 
 
 namespace lights {
 
 	bool light[] = { true,true,true,true };
-	bool deform = false;
-	GLfloat shaderDeform = 1;
 	void Lights(Balls* balls);
 	void OnkeyPress(GLFWwindow* window, int key, int scancode, int action, int mods);
 	glm::vec3 off = glm::vec3(0.0, 0.0, 0.0);
@@ -29,9 +28,9 @@ void lights::Lights(Balls* balls) {
 	if (light[1])
 	{
 		glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "directionalLight.direction"), 1, glm::value_ptr(glm::vec3(0.0, 2.0, 0.0)));
-		glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "directionalLight.ambient"), 1, glm::value_ptr(glm::vec3(0.6, 0.6, 0.6)));
-		glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "directionalLight.diffuse"), 1, glm::value_ptr(glm::vec3(2.0, 2.0, 2.0)));
-		glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "directionalLight.specular"), 1, glm::value_ptr(glm::vec3(1.0, 1.0, 1.0)));
+		glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "directionalLight.ambient"), 1, glm::value_ptr(glm::vec3(0.6, 2, 0.6)));
+		glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "directionalLight.diffuse"), 1, glm::value_ptr(glm::vec3(2.0, 2, 2.0)));
+		glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "directionalLight.specular"), 1, glm::value_ptr(glm::vec3(1.0, 2, 1.0)));
 	}
 	else
 	{
@@ -86,14 +85,7 @@ void lights::Lights(Balls* balls) {
 		glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "spotLight.direction"), 1, glm::value_ptr(glm::vec3(0.0, 0.0, 0.0)));
 	}
 
-	if (deform)
-	{
-		glProgramUniform1i(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "deform"), 1);
-	}
-	else
-	{
-		glProgramUniform1i(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "deform"), 0);
-	}
+	
 
 
 	//Propriedades do material
@@ -148,9 +140,4 @@ void lights::OnkeyPress(GLFWwindow* window, int key, int scancode, int action, i
 		else light[3] = true;
 	}
 
-	//Deform D 
-	else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-	{
-		deform = !deform;
-	}
 }
