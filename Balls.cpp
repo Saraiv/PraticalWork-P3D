@@ -289,7 +289,7 @@ GLuint Balls::Send() {
 	glVertexAttribPointer(normalid, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 	GLenum error = glGetError();
 	if (error != GL_NO_ERROR) {
-		std::cout << "OpenGL Error: " << error << std::endl;
+		std::cout << "OpenGL Error: " << error << std::endl;                           // da bind no 1º mas n da nem no 2 nem no 3
 	}
 	glBindBuffer(GL_ARRAY_BUFFER, Buffers[1]);
 	glVertexAttribPointer(texid, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
