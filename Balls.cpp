@@ -277,7 +277,7 @@ GLuint Balls::Send() {
 	this-> programa  = programa;
 	glUseProgram(programa);
 
-	// ligar atributos aos shaders
+	//Posição no shader (ponteiro da variavel do shader)
 	GLuint coordsid = glGetProgramResourceLocation(programa, GL_PROGRAM_INPUT, "vPosition");      // obtém a localização do atributo 'vposition' no 'programa'.
 	GLuint texid = glGetProgramResourceLocation(programa, GL_PROGRAM_INPUT, "vTexture");          // obtém a localização do atributo 'vtexture' no 'programa'.
 	GLuint normalid = glGetProgramResourceLocation(programa, GL_PROGRAM_INPUT, "vNormal"); // obtém a localização do atributo 'vnormal' no 'programa'.
@@ -286,14 +286,10 @@ GLuint Balls::Send() {
 
 	glBindBuffer(GL_ARRAY_BUFFER, Buffers[0]);
 	glVertexAttribPointer(coordsid, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-	
+
+
 	glBindBuffer(GL_ARRAY_BUFFER, Buffers[1]);
 	glVertexAttribPointer(texid, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
-
-	GLenum error = glGetError();
-	if (error != GL_NO_ERROR) {
-		std::cout << "OpenGL Error: " << error << std::endl;                           // da bind no 1º mas n da nem no 2 nem no 3
-	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, Buffers[2]);
 	glVertexAttribPointer(normalid, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
@@ -307,6 +303,7 @@ GLuint Balls::Send() {
 	GLint textureid = glGetProgramResourceLocation(programa, GL_PROGRAM_INPUT, "texture");
 	glProgramUniform1i(programa, textureid, 0);
 
+	
 	
 	return programa;
 }
