@@ -83,16 +83,16 @@ vec4 calcSpotLight(SpotLight light);
 void main()
 {
 	// Cálculo da componente emissiva do material.
-	vec4 emissive = vec4(material.emissive, 1.0);
+	//vec4 emissive = vec4(material.emissive, 1.0);
 
 	// Cálculo do efeito da iluminação no fragmento.
 	vec4 light[5];
 
 	// Contribuição da fonte de luz ambiente
-	light[0] = calcAmbientLight(ambientLight);
+	//light[0] = calcAmbientLight(ambientLight);
 
 	// Contribuição da fonte de luz direcional
-	//light[1] = calcDirectionalLight(directionalLight); // esta porra ta mal
+	light[1] = calcDirectionalLight(directionalLight); // esta porra ta mal
 
 	// Contribuição de cada fonte de luz Pontual
 	//light[2] = calcPointLight(pointLight); // esta porra tb ta mal
