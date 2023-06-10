@@ -86,6 +86,7 @@ int main() {
 	glewInit();
 
 	Balls ball5 = Balls("Poolballs/Ball5.obj");
+
 	Mesa mesa = Mesa();
 	lights::Lights(&ball5);
 	//lights::Lights(mesa);
