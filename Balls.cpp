@@ -291,10 +291,9 @@ GLuint Balls::Send(void) {
 	glBindBuffer(GL_ARRAY_BUFFER, Buffers[0]);
 	glVertexAttribPointer(coordsid, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
-
 	glBindBuffer(GL_ARRAY_BUFFER, Buffers[1]);
 	glVertexAttribPointer(texid, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
-
+	
 	glBindBuffer(GL_ARRAY_BUFFER, Buffers[2]);
 	glVertexAttribPointer(normalid, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
@@ -317,72 +316,21 @@ GLuint Balls::Send(void) {
 }
 
 void Balls::Draw(glm::vec3 position, glm::vec3 orientation) {
-	/*////Verificar se a luz ambiente esta on e atribuir valores
-	//lightMode1 == true ? glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "ambientLight.ambient"), 1, glm::value_ptr(glm::vec3(2.1, 2.1, 2.1))) :
-	//	glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "ambientLight.ambient"), 1, glm::value_ptr(glm::vec3(0, 0, 0)));
-	//lightMode2 == true ? getDirectionalLightActive() : getDirectionalLightInactive(); //Ver se a luz direcional esta on e atribuir valores
-	//lightMode3 == true ? getPontualLightActive() : getPontualLightInactive(); //Ver se a luz pontual esta on e atribuir valores
-	//lightMode4 == true ? getSpotLightActive() : getSpotLightInactive(); //Ver se a luz conica esta on e atribuir valores
-
-	////Propriedades material
-	//glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "material.emissive"), 1, glm::value_ptr(glm::vec3(0.0, 0.0, 0.0))); //esta a mais,apagar
-	//glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "material.ambient"), 1, glm::value_ptr(ka));
-	//glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "material.diffuse"), 1, glm::value_ptr(kd));
-	//glProgramUniform3fv(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "material.specular"), 1, glm::value_ptr(ks));
-	//glProgramUniform1f(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "material.shininess"), Ns);
-
-	//Atualiza camera
-	/*mvp = poolTableWindow.Model(accumulatedRotationY);
-	model = poolTableWindow.Projection(),
-		projection = poolTableWindow.View(ZOOM),
-		view = projection * view * model;
-
-	model = translate (glm::mat4(1.0), position);
-	view = poolTableWindow.View(1);
-	projection = poolTableWindow.Projection();
-	mvp = projection * view * model;
-
-	GLint modelId = glGetProgramResourceLocation(programa, GL_UNIFORM, "Model");                //Atribui valor ao uniform Model
-	glProgramUniformMatrix4fv(programa, modelId, 1, GL_FALSE, glm::value_ptr(model));
-
-	GLint viewId = glGetProgramResourceLocation(programa, GL_UNIFORM, "View");        //Atribui valor ao uniform ModelView
-	glProgramUniformMatrix4fv(programa, viewId, 1, GL_FALSE, glm::value_ptr(view));
-
-	GLint projectionId = glGetProgramResourceLocation(programa, GL_UNIFORM, "Projection");      //Atribui valor ao uniform Projection
-	glProgramUniformMatrix4fv(programa, projectionId, 1, GL_FALSE, glm::value_ptr(projection));
-
-	GLint normalViewId = glGetProgramResourceLocation(programa, GL_UNIFORM, "NormalMatrix");    //Atribui valor ao uniform NormalMatrix
-	glProgramUniformMatrix3fv(programa, normalViewId, 1, GL_FALSE, glm::value_ptr(normalMatrix));
-
-	GLint texSamplerId = glGetProgramResourceLocation(programa, GL_UNIFORM, "texSampler");      //Atribui valor ao uniform textSamples
-	glProgramUniform1i(programa, texSamplerId, 0);
-
-	//Ativar e desativar o efeito no modelo
-	//glProgramUniform1f(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "effectModel"), deformeffect);
-
-	//Sent time to .vert
-	//float time = float(glfwGetTime());
-	//glProgramUniform1f(programa, glGetProgramResourceLocation(programa, GL_UNIFORM, "time"), time); //coloca deformacao a ser efetuada atraves do tempo
-
-	// Vincula (torna ativo) o VAO
-	glBindVertexArray(VAO);
-
-	//Envia comando para desenho de primitivas GL_TRIANGLES, que utilizará os dados do VAO vinculado.
-	glDrawArrays(GL_TRIANGLES, 0, vertex_positions.size());*/
+	
 	Camera::GetInstance()->Update();
 
-	mat4 tempmodel = ball;
-	tempmodel = translate(tempmodel, position);
+	mat4 tempball = ball;
+	tempball = translate(tempball, position);
 
 	//Orientation é o pitch, yaw, roll em graus
-	tempmodel = rotate(tempmodel, radians(orientation.x), vec3(1, 0, 0)); //pitch
-	tempmodel = rotate(tempmodel, radians(orientation.y), vec3(0, 1, 0)); //yaw
-	tempmodel = rotate(tempmodel, radians(orientation.z), vec3(0, 0, 1)); //roll
+	tempball = rotate(tempball, radians(orientation.x), vec3(1, 0, 0)); //pitch
+	tempball = rotate(tempball, radians(orientation.y), vec3(0, 1, 0)); //yaw
+	tempball = rotate(tempball, radians(orientation.z), vec3(0, 0, 1)); //roll
 
 	GLint modelId = glGetProgramResourceLocation(programa, GL_UNIFORM, "Model");
-	glProgramUniformMatrix4fv(programa, modelId, 1, GL_FALSE, glm::value_ptr(tempmodel));
+	glProgramUniformMatrix4fv(programa, modelId, 1, GL_FALSE, glm::value_ptr(tempball));
 
-	mat4 modelView = Camera::GetInstance()->view * tempmodel;
+	mat4 modelView = Camera::GetInstance()->view * tempball;
 	GLint modelViewId = glGetProgramResourceLocation(programa, GL_UNIFORM, "ModelView");
 	glProgramUniformMatrix4fv(programa, modelViewId, 1, GL_FALSE, glm::value_ptr(modelView));
 
@@ -402,6 +350,6 @@ void Balls::Draw(glm::vec3 position, glm::vec3 orientation) {
 
 	// Envia comando para desenho de primitivas GL_TRIANGLES, que utilizará os dados do VAO vinculado.
 	glDrawArrays(GL_TRIANGLES, 0, vertex_positions.size());
-	// glDrawElements(GL_TRIANGLES, NumIndices, GL_UNSIGNED_INT, (void*)0); // eb
+	// glDrawElements(GL_TRIANGLES, NumIndices, GL_UNSIGNED_INT, (void*)0); 
 }
 

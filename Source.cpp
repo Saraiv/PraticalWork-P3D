@@ -63,7 +63,7 @@ int main() {
 	GLFWwindow* window;
 	Camera* camera;
 	camera = camera->GetInstance();
-	camera->InicializeCamera(45.0f, WIDTH, HEIGHT, glm::vec3(0.0f, 2.0f, 5.0f), glm::vec3(0.0f, 2.0f, 0.0));
+	camera->InicializeCamera(45.0f, WIDTH, HEIGHT, glm::vec3(0.0f, 0.5f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0));
 
 	if (!glfwInit()) return -1;
 
@@ -88,20 +88,20 @@ int main() {
 	//balls[0].Read("Poolballs/Ball1.obj");
 
 	Balls ball = Balls("Poolballs/Ball1.obj");
-	ball.Send();
 	//poolTable.Send();	
 	//balls[0].Send();6
+	lights::Lights(&ball);
 
 	while (!glfwWindowShouldClose(window)) {
 		
 		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		lights::Lights(&ball);
+		
 		//Draw into screen
 		//poolTable.Draw();
 		//balls[0].Draw(glm::vec3(-5.0f, 2.0f, -8.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-		ball.Draw(glm::vec3(0, 2, 0), glm::vec3(0, 0, 0));
+		ball.Draw(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
