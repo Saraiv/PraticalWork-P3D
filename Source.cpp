@@ -6,6 +6,7 @@
 #include"Balls.h"
 #include "Lights.h"
 #include "Camera.h"
+#include "mesa.h"
 
 #define WIDTH 1280
 #define HEIGTH 720
@@ -63,7 +64,7 @@ int main() {
 	GLFWwindow* window;
 	Camera* camera;
 	camera = camera->GetInstance();
-	camera->InicializeCamera(45.0f, WIDTH, HEIGHT, glm::vec3(0.0f, 0.5f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0));
+	camera->InicializeCamera(45.0f, WIDTH, HEIGHT, glm::vec3(15.0f, 2.5f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 
 	if (!glfwInit()) return -1;
 
@@ -84,13 +85,10 @@ int main() {
 	init();
 	glewInit();
 
-
-	//balls[0].Read("Poolballs/Ball1.obj");
-
-	Balls ball = Balls("Poolballs/Ball1.obj");
-	//poolTable.Send();	
-	//balls[0].Send();6
-	lights::Lights(&ball);
+	Balls ball5 = Balls("Poolballs/Ball5.obj");
+	Mesa mesa = Mesa();
+	lights::Lights(&ball5);
+	//lights::Lights(mesa);
 
 	while (!glfwWindowShouldClose(window)) {
 		
@@ -101,7 +99,18 @@ int main() {
 		//Draw into screen
 		//poolTable.Draw();
 		//balls[0].Draw(glm::vec3(-5.0f, 2.0f, -8.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-		ball.Draw(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
+		//mesa.display();
+		//mesa.Draw(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
+		ball5.Draw(glm::vec3(-1.1, 0, 0), glm::vec3(0, 95, 0));
+		ball5.Draw(glm::vec3(1, 0, 0), glm::vec3(0, 95, 0));
+		ball5.Draw(glm::vec3(-1.1, 0, 3), glm::vec3(0, 95, 0));
+		ball5.Draw(glm::vec3(1, 0, 3), glm::vec3(0, 95, 0));
+		ball5.Draw(glm::vec3(-1.1, 0, -3), glm::vec3(0, 95, 0));
+		ball5.Draw(glm::vec3(1, 0, -3), glm::vec3(0, 95, 0));
+		ball5.Draw(glm::vec3(-1.1, 0, 6), glm::vec3(0, 95, 0));
+		ball5.Draw(glm::vec3(1, 0, 6), glm::vec3(0, 95, 0));
+		ball5.Draw(glm::vec3(-1.1, 0, -6), glm::vec3(0, 95, 0));
+		ball5.Draw(glm::vec3(1, 0, -6), glm::vec3(0, 95, 0));
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

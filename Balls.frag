@@ -104,7 +104,7 @@ void main()
 	//Com iluminação
 	fColor = (emissive + light[0] + light[1] + light[2] + light[3] + light[4] ) * texture(texSampler, texCoords);
 
-	//fColor = vec4(1.0,0.5,0.5,1.0);
+	//fColor = vec4(0.4,0.8,0.4,1.0);
 }
 
 vec4 calcAmbientLight(AmbientLight light) {
