@@ -89,7 +89,7 @@ void main()
 	vec4 light[5];
 
 	// Contribuição da fonte de luz ambiente
-	//light[0] = calcAmbientLight(ambientLight);
+	light[0] = calcAmbientLight(ambientLight);
 
 	// Contribuição da fonte de luz direcional
 	//light[1] = calcDirectionalLight(directionalLight); // esta porra ta mal

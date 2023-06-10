@@ -133,6 +133,7 @@
     <ClCompile Include="Constants.h" />
     <ClCompile Include="Balls.cpp" />
     <ClCompile Include="LoadShaders.cpp" />
+    <ClCompile Include="mesa.cpp" />
     <ClCompile Include="PoolTable.cpp" />
     <ClCompile Include="PoolTableWindow.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -143,6 +144,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Lights.h" />
     <ClInclude Include="LoadShaders.h" />
+    <ClInclude Include="mesa.h" />
     <ClInclude Include="PoolTable.h" />
     <ClInclude Include="PoolTableWindow.h" />
   </ItemGroup>
