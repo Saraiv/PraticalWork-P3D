@@ -340,6 +340,7 @@ void Balls::Draw(glm::vec3 position, glm::vec3 orientation) {
 
 	GLint viewID = glGetProgramResourceLocation(programa, GL_UNIFORM, "View");
 	glProgramUniformMatrix4fv(programa, viewID, 1, GL_FALSE, glm::value_ptr(Camera::GetInstance()->view));
+
 	GLint projectionId = glGetProgramResourceLocation(programa, GL_UNIFORM, "Projection");
 	glProgramUniformMatrix4fv(programa, projectionId, 1, GL_FALSE, glm::value_ptr(Camera::GetInstance()->projection));
 
