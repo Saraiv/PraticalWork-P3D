@@ -130,7 +130,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Constants.h" />
     <ClCompile Include="Balls.cpp" />
     <ClCompile Include="LoadShaders.cpp" />
     <ClCompile Include="mesa.cpp" />

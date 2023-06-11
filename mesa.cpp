@@ -4,12 +4,13 @@
 #define HEIGTH 720
 
 using namespace std;
+using namespace glm;
 GLuint VAO;
 GLuint Buffer;
 
 GLuint programa;
 
-glm::mat4 Model, View, Projection;
+mat4 Model, View, Projection;
 GLfloat angle = 0.0f;
 
 void print_gl_info(void) {
@@ -65,19 +66,20 @@ GLuint Mesa::Send(void) {
 		{ GL_NONE, NULL }
 	};  //GL_None marca o final da lista de shader info
 
-	programa = LoadShaders(shaders);
+	programa = LoadShaders(shaders); //Load destes shaders que foram carregados, Balls.vert e Balls.frag
 	this->programa = programa;
 	glUseProgram(programa);
 
 	//Posição no shader (ponteiro da variavel do shader)
 	GLuint coordsid = glGetProgramResourceLocation(programa, GL_PROGRAM_INPUT, "vPosition");      // obtém a localização do atributo 'vposition' no 'programa'.
 	
+	//Fixa o buffer e atribui as coordenadas das posições dos vertices do shader
 	glBindBuffer(GL_ARRAY_BUFFER, Buffer);
 	glVertexAttribPointer(coordsid, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
 	GLenum error = glGetError();
 	if (error != GL_NO_ERROR) {
-		std::cout << "OpenGL Error: " << error << std::endl;                           // da bind no 1º mas n da nem no 2 nem no 3
+		cout << "OpenGL Error: " << error << endl;                           // da bind no 1º mas n da nem no 2 nem no 3
 	}
 
 	//habitita o atributo com localização 'coordsid', 'textid', normalid para o vao ativo.
@@ -89,33 +91,40 @@ GLuint Mesa::Send(void) {
 	return programa;
 }
 
-void Mesa::Draw(glm::vec3 position, glm::vec3 orientation) {
-	Camera::GetInstance()->Update();
+void Mesa::Draw(vec3 position, vec3 orientation) {
+	Camera::GetInstance()->Update(); //Update da camera
 
-	glm::mat4 tempmesa = mesa;
-	tempmesa = glm::translate(tempmesa, position);
+	mat4 tempmesa = mesa;
+	tempmesa = translate(tempmesa, position);
 
 	//Orientation é o pitch, yaw, roll em graus
-	tempmesa = rotate(tempmesa, glm::radians(orientation.x), glm::vec3(1, 0, 0)); //pitch
-	tempmesa = rotate(tempmesa, glm::radians(orientation.y), glm::vec3(0, 1, 0)); //yaw
-	tempmesa = rotate(tempmesa, glm::radians(orientation.z), glm::vec3(0, 0, 1)); //roll
+	tempmesa = rotate(tempmesa, radians(orientation.x), vec3(1, 0, 0)); //pitch
+	tempmesa = rotate(tempmesa, radians(orientation.y), vec3(0, 1, 0)); //yaw
+	tempmesa = rotate(tempmesa, radians(orientation.z), vec3(0, 0, 1)); //roll
 
+	//Fixa um buffer e atribui ao shader o valor do model
 	GLint modelId = glGetProgramResourceLocation(programa, GL_UNIFORM, "Model");
-	glProgramUniformMatrix4fv(programa, modelId, 1, GL_FALSE, glm::value_ptr(Model));
+	glProgramUniformMatrix4fv(programa, modelId, 1, GL_FALSE, value_ptr(Model));
 
-	glm::mat4 modelView = Camera::GetInstance()->view * Model;
+	//Fixa um buffer e atribui ao shader o valor do model view (view * model)
+	mat4 modelView = Camera::GetInstance()->view * Model;
 	GLint modelViewId = glGetProgramResourceLocation(programa, GL_UNIFORM, "ModelView");
-	glProgramUniformMatrix4fv(programa, modelViewId, 1, GL_FALSE, glm::value_ptr(modelView));
+	glProgramUniformMatrix4fv(programa, modelViewId, 1, GL_FALSE, value_ptr(modelView));
 
-	glm::mat3 normalMatrix = glm::inverseTranspose(glm::mat3(modelView));
+	//Fixa um buffer e atribui ao shader o valor da matriz normal da model view
+	mat3 normalMatrix = inverseTranspose(mat3(modelView));
 	GLint normalMatrixId = glGetProgramResourceLocation(programa, GL_UNIFORM, "NormalMatrix");
-	glProgramUniformMatrix4fv(programa, normalMatrixId, 1, GL_FALSE, glm::value_ptr(normalMatrix));
+	glProgramUniformMatrix4fv(programa, normalMatrixId, 1, GL_FALSE, value_ptr(normalMatrix));
 
+	//Fixa um buffer e atribui ao shader o valor da view
 	GLint viewID = glGetProgramResourceLocation(programa, GL_UNIFORM, "View");
-	glProgramUniformMatrix4fv(programa, viewID, 1, GL_FALSE, glm::value_ptr(Camera::GetInstance()->view));
-	GLint projectionId = glGetProgramResourceLocation(programa, GL_UNIFORM, "Projection");
-	glProgramUniformMatrix4fv(programa, projectionId, 1, GL_FALSE, glm::value_ptr(Camera::GetInstance()->projection));
+	glProgramUniformMatrix4fv(programa, viewID, 1, GL_FALSE, value_ptr(Camera::GetInstance()->view));
 
+	//Fixa um buffer e atribui ao shader o valor da projection
+	GLint projectionId = glGetProgramResourceLocation(programa, GL_UNIFORM, "Projection");
+	glProgramUniformMatrix4fv(programa, projectionId, 1, GL_FALSE, value_ptr(Camera::GetInstance()->projection));
+
+	//Dá bind do vertex array object
 	glBindVertexArray(VAO);
 
 	// Envia comando para desenho de primitivas GL_TRIANGLES, que utilizará os dados do VAO vinculado.

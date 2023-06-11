@@ -24,27 +24,30 @@
 
 #define NumVertices 36
 
+using namespace std;
+using namespace glm;
+
 class Mesa {
 public:
 	Mesa();
-	void Draw(glm::vec3 position, glm::vec3 orientation);
+	void Draw(vec3 position, vec3 orientation);
 	void print_gl_info(void);
 	GLuint Send(void);
 	void display(void);
 	void print_error(int error, const char* description);
-	glm::vec3 ka, kd, ks;
+	vec3 ka, kd, ks;
 	GLfloat ns;
 
 	float accumulatedRotationY = 0.0f;
 	float ZOOM = 15.0f;
 private:
 	
-	glm::mat4 Model, View, Projection;
+	mat4 Model, View, Projection;
 	GLuint VAO;
 	GLuint Buffer;
 	GLuint programa;
 	GLfloat angle = 0.0f;
-	glm::mat4 mesa;
+	mat4 mesa;
 	GLfloat vertices[NumVertices * 3] = {
         20.5f, -1.0f,  10.5f,
         20.5f, -1.0f, -10.5f,
@@ -114,13 +117,13 @@ private:
 	};
 };
 inline Mesa::Mesa() {
-	Projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
-	View = glm::lookAt(
-		glm::vec3(0.0f, 0.0f, 5.0f),	// eye (posição da câmara).
-		glm::vec3(0.0f, 0.0f, 0.0f),	// center (para onde está a "olhar")
-		glm::vec3(0.0f, 1.0f, 0.0f)		// up
+	Projection = perspective(radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
+	View = lookAt(
+		vec3(0.0f, 0.0f, 5.0f),	// eye (posição da câmara).
+		vec3(0.0f, 0.0f, 0.0f),	// center (para onde está a "olhar")
+		vec3(0.0f, 1.0f, 0.0f)		// up
 	);
-	Model = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0f, 1.0f, 0.0f));
-	glm::mat4 ModelViewProjection = Projection * View * Model;
+	Model = rotate(mat4(1.0f), angle, vec3(0.0f, 1.0f, 0.0f));
+	mat4 ModelViewProjection = Projection * View * Model;
 }
 

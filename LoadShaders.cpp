@@ -8,15 +8,17 @@
 
 #include "LoadShaders.h"
 
+using namespace std;
+
 static const GLchar* ReadShader(const char* filename) {
 	// Abre o ficheiro 'filename' em binário, e coloca-se na última posição do ficheiro.
-	std::ifstream ficheiro(filename, std::ifstream::ate | std::ifstream::binary);
+	ifstream ficheiro(filename, ifstream::ate | ifstream::binary);
 	// Se o ficheiro foi aberto.
 	if (ficheiro.is_open()) {
 		// Leitura da próxima posição de leitura.
-		std::streampos tamanhoDoFicheiroEmBytes = ficheiro.tellg();
+		streampos tamanhoDoFicheiroEmBytes = ficheiro.tellg();
 		// Reposiciona a leitura do ficheiro no seu início.
-		ficheiro.seekg(0, std::ios::beg);
+		ficheiro.seekg(0, ios::beg);
 
 		// Alocação de espaço de memória para dados do ficheiro.
 		GLchar* source = new GLchar[int(tamanhoDoFicheiroEmBytes) + 1];
@@ -32,7 +34,7 @@ static const GLchar* ReadShader(const char* filename) {
 		return const_cast<const GLchar*>(source);
 	}
 	else {
-		std::cerr << "Erro ao abrir o ficheiro '" << filename << "'" << std::endl;
+		cerr << "Erro ao abrir o ficheiro '" << filename << "'" << endl;
 	}
 
 	return nullptr;
@@ -81,7 +83,7 @@ GLuint LoadShaders(ShaderInfo* shaders) {
 
 			GLchar* log = new GLchar[len + 1];
 			glGetShaderInfoLog(shaders[i].shader, len, &len, log);
-			std::cerr << "Shader compilation failed: " << log << std::endl;
+			cerr << "Shader compilation failed: " << log << endl;
 			delete[] log;
 #endif /* DEBUG */
 
@@ -114,7 +116,7 @@ GLuint LoadShaders(ShaderInfo* shaders) {
 
 		GLchar* log = new GLchar[len + 1];
 		glGetProgramInfoLog(program, len, &len, log);
-		std::cerr << "Shader linking failed: " << log << std::endl;
+		cerr << "Shader linking failed: " << log << endl;
 		delete[] log;
 #endif /* DEBUG */
 

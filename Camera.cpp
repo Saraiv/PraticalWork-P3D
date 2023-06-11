@@ -1,30 +1,30 @@
 #pragma once
 #include "Camera.h"
 
+using namespace std;
+using namespace glm;
 
 
-
-void Camera::InicializeCamera(float fovDegrees, float WindowWidth, float WindowHeight, glm::vec3 pos, glm::vec3 target) {
-
+void Camera::InicializeCamera(float fovDegrees, float WindowWidth, float WindowHeight, vec3 pos, vec3 target) {
 	zoom = 5.0f;
 	this->position = pos;
 	this->position.z = zoom;
 	this->target = target;
-	glm::vec3 cameraFront = position - target;
-	glm::vec3 cameraRight = glm::cross(cameraFront, glm::vec3(0.0f, 1.0f, 0.0f));
-	glm::vec3 worldUp = -glm::cross(cameraFront, cameraRight);
-	projection = glm::perspective(glm::radians(fovDegrees), WindowWidth / WindowHeight, 0.1f, 100.f);
-	view = glm::lookAt(this->position, target, worldUp);
-
+	//Frente da camera
+	vec3 cameraFront = position - target;
+	//Parte direita da camera
+	vec3 cameraRight = cross(cameraFront, vec3(0.0f, 1.0f, 0.0f));
+	//Parde de cima do mundo
+	vec3 worldUp = -cross(cameraFront, cameraRight);
+	//Projeçao do mundo
+	projection = perspective(radians(fovDegrees), WindowWidth / WindowHeight, 0.1f, 100.f);
+	//Posiçao da camera no mundo
+	view = lookAt(this->position, target, worldUp);
 }
 void Camera::Update() {
-
-	view = glm::lookAt(glm::vec3(position.x, position.y, position.z), target, glm::vec3(0.0f, 1.0f, 0.0f));
-
+	view = lookAt(vec3(position.x, position.y, position.z), target, vec3(0.0f, 1.0f, 0.0f)); // Update a nossa posição do mundo
 }
 void Camera::mouseCallback(GLFWwindow* window, double xpos, double ypos) {
-
-
 	// assume os primeiros valores de x y 
 	if (firstMouse)
 	{
@@ -55,11 +55,11 @@ void Camera::mouseCallback(GLFWwindow* window, double xpos, double ypos) {
 		pitch = -90.0f;
 
 	// alterar os valores da camera
-	position.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch)) * zoom;
-	position.y = -sin(glm::radians(pitch)) * zoom;
-	position.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch)) * zoom;
-	//position.x = position.x * cos(glm::radians(xoffset));
-   // position.z = position.z * -sin(glm::radians(xoffset));
+	position.x = cos(radians(yaw)) * cos(radians(pitch)) * zoom;
+	position.y = -sin(radians(pitch)) * zoom;
+	position.z = sin(radians(yaw)) * cos(radians(pitch)) * zoom;
+	//position.x = position.x * cos(radians(xoffset));
+   // position.z = position.z * -sin(radians(xoffset));
 
 
 
@@ -78,13 +78,13 @@ void Camera::scrollCallback(GLFWwindow* window, double xoffset, double yoffset) 
 	}
 
 
-	position.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch)) * zoom;
-	position.y = -sin(glm::radians(pitch)) * zoom;
-	position.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch)) * zoom;
+	position.x = cos(radians(yaw)) * cos(radians(pitch)) * zoom;
+	position.y = -sin(radians(pitch)) * zoom;
+	position.z = sin(radians(yaw)) * cos(radians(pitch)) * zoom;
 
 
 
-	std::cout << "ZOOM = " << zoom << std::endl;
+	cout << "ZOOM = " << zoom << endl;
 }
 
 //construtor para alocar memoria
@@ -92,7 +92,6 @@ Camera* Camera::instance = nullptr;
 
 //construtor para inicializar a camera
 Camera* Camera::GetInstance() {
-
 	return (!instance) ?
 		instance = new Camera :
 		instance;

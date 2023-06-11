@@ -30,9 +30,6 @@
     <ClCompile Include="Balls.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Constants.h">
-      <Filter>Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="PoolTableWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
