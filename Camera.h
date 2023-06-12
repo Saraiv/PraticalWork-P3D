@@ -36,11 +36,3 @@ private:
 	static Camera* instance;
 
 };
-
-
-
-
-
-
-
-#pragma once

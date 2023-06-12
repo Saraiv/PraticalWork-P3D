@@ -133,9 +133,6 @@
     <ClCompile Include="Constants.h" />
     <ClCompile Include="Balls.cpp" />
     <ClCompile Include="LoadShaders.cpp" />
-    <ClCompile Include="mesa.cpp" />
-    <ClCompile Include="PoolTable.cpp" />
-    <ClCompile Include="PoolTableWindow.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="stb_image.h" />
   </ItemGroup>
@@ -144,13 +141,12 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Lights.h" />
     <ClInclude Include="LoadShaders.h" />
-    <ClInclude Include="mesa.h" />
-    <ClInclude Include="PoolTable.h" />
-    <ClInclude Include="PoolTableWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Balls.frag" />
     <None Include="Balls.vert" />
+    <None Include="PoolTable.frag" />
+    <None Include="PoolTable.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

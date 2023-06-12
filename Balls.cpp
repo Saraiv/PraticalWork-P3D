@@ -8,7 +8,29 @@
 
 using namespace glm;
 
+void Balls::GetPointersId(GLuint shader, GLuint coordsId, GLuint normalsId, GLuint texId, GLuint textureId, int counter)
+{
+	programa = shader;
+	this->coordsId = coordsId;
+	this->normalsId = normalsId;
+	this->texId = texId;
+	this->textureId = textureId;
+	this->counter = counter;
+
+	
+
+}
+
 void Balls::Read(const std::string objFilepath) {
+	using namespace std;
+	cout << endl << endl << "Ball Indexes" << endl;
+	cout << "Programa: " << programa << endl;
+	cout << "coordsId: " << this->coordsId << endl;
+	cout << "normalsId: " << this->normalsId << endl;
+	cout << "texId: " << this->texId << endl;
+	cout << "textureId: " << this->textureId << endl;
+	cout << "counter: " << this->counter << endl;
+
 	//Vertex Variables
 	std::vector<glm::fvec3> vertexPosition;
 	std::vector<glm::fvec2> vertexTexturesCoord;
@@ -93,98 +115,72 @@ void Balls::Read(const std::string objFilepath) {
 		}
 		ss.clear();
 	}
-	std::cout << vertexPosition.size() << std::endl;
-	std::cout << vertexTexturesCoord.size() << std::endl;
-	std::cout << vertexNormal.size() << std::endl;
-
-	std::cout << vertex_positions.size() << std::endl;
-	std::cout << vertex_textures_coords.size() << std::endl;
-	std::cout << vertex_normals.size() << std::endl;
+	
 	in_file.close();
 }
 
 void Balls::Load(std::string fileName) {
-	//Ler o ficheiro (material) : Variaveis
-	std::stringstream ss;
-	std::string fileNameTemp = "PoolBalls/" + fileName;
-	std::ifstream in_file(fileNameTemp);
-	std::string line = "";
-	std::string prefix = "";
+	
+	std::ifstream in_file("PoolBalls/" + fileName);
 	glm::vec3 vec3_aux;
-	float ns;
-	std::string nextFile;
 
-	//Ver se pode abrir o file
-	try
+	if (!in_file.is_open())
 	{
-		if (!in_file.is_open())
-		{
-			throw std::runtime_error("Error opening the material file");
-		}
-		// File opened successfully, continue processing
+		std::cout << "Error opening the file: " << fileName << std::endl;
+		return;
 	}
-	catch (const std::exception& e)
-	{
-		// Handle the exception
-		std::cout << "Exception occurred: " << e.what() << std::endl;
-	}
+
+	std::string line;
 
 	while (std::getline(in_file, line))
 	{
+		std::istringstream iss(line);
+		std::string type;
+		std::string texFileName;
 
-		ss.str(line);
-		ss >> prefix;
+		iss >> type;
 
-		//Verificar se a linha é relevante ou nao conforme o prefixo 
-		if (prefix == "Ns" || prefix == "Ka" || prefix == "Kd" || prefix == "Ks" || prefix == "map_Kd")
+		if (type == "Ka")
 		{
-			if (prefix == "map_Kd")
-			{
-				ss >> nextFile;
-				Texture(nextFile);
-			}
-			else if (prefix == "Ns")
-			{
-				ss >> ns;
-				Ns = ns;
-			}
-			else if (prefix == "Ka")
-			{
-				ss >> vec3_aux.x >> vec3_aux.y >> vec3_aux.z;
-				ka = vec3_aux;
-			}
-			else if (prefix == "Kd")
-			{
-				ss >> vec3_aux.x >> vec3_aux.y >> vec3_aux.z;
-				kd = vec3_aux;
-			}
-			else if (prefix == "Ks")
-			{
-				ss >> vec3_aux.x >> vec3_aux.y >> vec3_aux.z;
-				ks = vec3_aux;
-			}
+			iss >> vec3_aux.x >> vec3_aux.y >> vec3_aux.z;
+			ka = vec3_aux;
 		}
-		ss.clear();
+		else if (type == "Kd")
+		{
+			iss >> vec3_aux.x >> vec3_aux.y >> vec3_aux.z;
+			kd = vec3_aux;
+		}
+		else if (type == "Ks")
+		{
+			iss >> vec3_aux.x >> vec3_aux.y >> vec3_aux.z;
+			ks = vec3_aux;
+		}
+		else if (type == "Ns")
+		{
+			iss >> ns;
+		}
+		else if (type == "map_Kd")
+		{
+			iss >> texFileName;
+			Texture(texFileName);
+		}
 	}
-
 	in_file.close();
-
-
 }
 
 void  Balls::Texture(const std::string textureFile)
 {
-	///--------   Textura    ---------
-	GLuint textureName = 0;
-	std::string file = textureFile;
-	std::string fileTemp = "PoolBalls/" + file;
-	// Gera um nome de textura
-	glGenTextures(1, &textureName);
-
-	// Ativa a Unidade de Textura #0
-	// A Unidade de Textura 0 está ativa por defeito.
-	// Só uma Unidade de Textura pode estar ativa.
 	glActiveTexture(GL_TEXTURE0);
+	///--------   Textura    ---------
+	GLuint textureName = counter;
+	this->textureName = textureName;
+	using namespace std;
+	//cout << "textureName: " << this->textureName << endl;
+
+	std::string fileTemp = "PoolBalls/" + textureFile;
+	// Gera um nome de textura
+
+	glGenTextures(1, &textureName);
 
 	glBindTexture(GL_TEXTURE_2D, textureName);
 
@@ -194,6 +190,7 @@ void  Balls::Texture(const std::string textureFile)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
 
 	// Ativa a inversão vertical da imagem, aquando da sua leitura para memória.
 	stbi_set_flip_vertically_on_load(true);
@@ -228,7 +225,7 @@ void  Balls::Texture(const std::string textureFile)
 	}
 }
 
-GLuint Balls::Send(void) {
+void Balls::Send(void) {
 
 	GLfloat BindPos[24192 * 3];
 	GLfloat BindN[24192 * 3];
@@ -250,7 +247,7 @@ GLuint Balls::Send(void) {
 		BindTex[i * 2] = vertex_textures_coords[i].x;
 		BindTex[i * 2 + 1] = vertex_textures_coords[i].y;
 
-		//std::cout << "Current position: " << currentPosition << std::endl;
+		
 	}
 
 	glGenVertexArrays(1, &VAO);// Gerar nomes para VAOs.
@@ -264,64 +261,43 @@ GLuint Balls::Send(void) {
 		if (i == 0)
 			glBufferStorage(GL_ARRAY_BUFFER, sizeof(BindPos), BindPos, 0);  //Info dos vertices - Inicializa o VBO (que está ativo) com dados imutáveis.
 		if (i == 1)
-			glBufferStorage(GL_ARRAY_BUFFER, sizeof(BindTex), BindTex, 0); //Info das posições das texturas - Inicializa o VBO (que está ativo) com dados imutáveis.
-		if (i == 2)
 			glBufferStorage(GL_ARRAY_BUFFER, sizeof(BindN), BindN, 0); //Info das normais - Inicializa o VBO (que está ativo) com dados imutáveis.
+		if (i == 2)
+			glBufferStorage(GL_ARRAY_BUFFER, sizeof(BindTex), BindTex, 0); //Info das posições das texturas - Inicializa o VBO (que está ativo) com dados imutáveis.
 	}
 
-
-
-	ShaderInfo shaders[] = { 
-		{ GL_VERTEX_SHADER,"Balls.vert" },
-		{ GL_FRAGMENT_SHADER, "Balls.frag" },
-		{ GL_NONE, NULL } 
-	};  //GL_None marca o final da lista de shader info
-	
-	programa = LoadShaders(shaders); 
-	this->programa = programa;
-	glUseProgram(programa);
-
-	//Posição no shader (ponteiro da variavel do shader)
-	GLuint coordsid = glGetProgramResourceLocation(programa, GL_PROGRAM_INPUT, "vPosition");      // obtém a localização do atributo 'vposition' no 'programa'.
-	GLuint texid = glGetProgramResourceLocation(programa, GL_PROGRAM_INPUT, "vTexture");          // obtém a localização do atributo 'vtexture' no 'programa'.
-	GLuint normalid = glGetProgramResourceLocation(programa, GL_PROGRAM_INPUT, "vNormal"); // obtém a localização do atributo 'vnormal' no 'programa'.
-
-	std::cout << coordsid << std::endl << texid << std::endl << normalid << std::endl;
-
 	glBindBuffer(GL_ARRAY_BUFFER, Buffers[0]);
-	glVertexAttribPointer(coordsid, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+	glVertexAttribPointer(coordsId, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
 	glBindBuffer(GL_ARRAY_BUFFER, Buffers[1]);
-	glVertexAttribPointer(texid, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
+	glVertexAttribPointer(normalsId, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 	
 	glBindBuffer(GL_ARRAY_BUFFER, Buffers[2]);
-	glVertexAttribPointer(normalid, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+	glVertexAttribPointer(texId, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
+	
+	//habilita o atributo com localização 'coordsid', 'textid', normalid para o vao ativo.
+	glEnableVertexAttribArray(coordsId);
+	glEnableVertexAttribArray(normalsId);
+	glEnableVertexAttribArray(texId);
+
+	glProgramUniform1i(programa, textureId, 0);
 
 	GLenum error = glGetError();
 	if (error != GL_NO_ERROR) {
-		std::cout << "OpenGL Error: " << error << std::endl;                           // da bind no 1º mas n da nem no 2 nem no 3
+		std::cout << "OpenGL Error: " << error << std::endl;                           
 	}
-	
-	//habitita o atributo com localização 'coordsid', 'textid', normalid para o vao ativo.
-	glEnableVertexAttribArray(coordsid);
-	glEnableVertexAttribArray(texid);
-	glEnableVertexAttribArray(normalid);
-
-	GLint textureid = glGetProgramResourceLocation(programa, GL_PROGRAM_INPUT, "texSampler");
-	glProgramUniform1i(programa, textureid, 0);
-
-	
-	
-	return programa;
 }
 
-void Balls::Draw(glm::vec3 position, glm::vec3 orientation) {
-	
+void Balls::Draw(glm::vec3 position, glm::vec3 orientation, glm::mat4 modelMatrix) {
+
 	Camera::GetInstance()->Update();
 
-	mat4 tempball = ball;
+	mat4 tempball = modelMatrix;
+
+	
 	tempball = translate(tempball, position);
 
+	
 	//Orientation é o pitch, yaw, roll em graus
 	tempball = rotate(tempball, radians(orientation.x), vec3(1, 0, 0)); //pitch
 	tempball = rotate(tempball, radians(orientation.y), vec3(0, 1, 0)); //yaw
@@ -344,8 +320,7 @@ void Balls::Draw(glm::vec3 position, glm::vec3 orientation) {
 	GLint projectionId = glGetProgramResourceLocation(programa, GL_UNIFORM, "Projection");
 	glProgramUniformMatrix4fv(programa, projectionId, 1, GL_FALSE, glm::value_ptr(Camera::GetInstance()->projection));
 
-	
-
+	glBindTexture(GL_TEXTURE_2D, textureName +1);
 
 	glBindVertexArray(VAO);
 
@@ -353,4 +328,3 @@ void Balls::Draw(glm::vec3 position, glm::vec3 orientation) {
 	glDrawArrays(GL_TRIANGLES, 0, vertex_positions.size());
 	// glDrawElements(GL_TRIANGLES, NumIndices, GL_UNSIGNED_INT, (void*)0); 
 }
-

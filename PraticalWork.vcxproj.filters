@@ -24,17 +24,11 @@
     <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PoolTable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Balls.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Constants.h">
       <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PoolTableWindow.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stb_image.h">
       <Filter>Header Files</Filter>
@@ -45,18 +39,9 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mesa.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Balls.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PoolTable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PoolTableWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LoadShaders.h">
@@ -68,15 +53,18 @@
     <ClInclude Include="Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mesa.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Balls.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="Balls.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="PoolTable.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="PoolTable.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>
